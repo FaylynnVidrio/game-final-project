@@ -1,0 +1,15 @@
+var gameScreen = function()
+{
+    background(0, 200, 255);
+    fill(255, 255, 255);
+    rect(25, 25, 350, 319);
+    fill(0, 0, 0);
+    textSize(25);
+    text("How to Play", 130, 71); // header
+    textSize(17);
+    text("The main goal is to complete as many orders before the time runs out to score points. Each customer will give you an order and yo must complete it in the given time. Follow the order instructions and select the right ingredients to make a burger. Cliek on the soda machine to get a soda and double click on the fryers to give you some fries.", 39, 100, 331, 369);
+};
+
+draw = function() {
+    gameScreen();
+};
