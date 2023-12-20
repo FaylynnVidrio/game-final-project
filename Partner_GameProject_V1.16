@@ -1,0 +1,1396 @@
+//Game global variables
+var currentScene = 0;
+var a = 2;
+var currentCharacter;
+var characterSelected;
+var startTimer = false;
+var startOrder = false;
+var drawPatty = false;
+var drawCheese = false;
+var drawLettuce = false;
+var drawBuns = false;
+var drawFries = false;
+var drawFriesFinal = false;
+var orderFin = false;
+var score = 0;  
+var m = millis();
+
+
+
+// Character Objects
+var Calin = function(x, y, height, shirtColor, initialOption) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+    this.shirtColor = shirtColor;
+    this.initialOption = initialOption;
+}; //Calin Constructor
+
+Calin.prototype.draw = function() {
+    var p = this.height/100;
+    // Body
+    noStroke();
+    fill(255,219,172);
+    rect(this.x + 90 * p , this.y + p * 65, p * 20, p * 20);
+    arc(this.x + p * 90, this.y + p * 65, p * 20, p * 20, 180, 270);
+    fill(this.shirtColor);
+    rect(this.x + p * 75, this.y + p * 85, p * 50, p * 50);
+    fill(255,219,172);
+    arc(this.x + p * 100, this.y + p * 80, p * 20, p * 20, 0, 180);
+    fill(this.shirtColor);
+    triangle(this.x + p * 125, this.y + p * 85, this.x + p * 125, this.y + p * 135, this.x + p * 148, this.y + p * 135);
+    triangle(this.x + p * 55, this.y + p * 135, this.x + p * 75, this.y + p * 85, this.x + p * 148, this.y + p * 135);
+    // Head
+    noStroke();
+    fill(255,219,172);
+    ellipse(this.x + p * 100, this.y + p * 34, p * 70, p * 90);
+    arc(this.x + p * 75, this.y + p * 30, p * 33, p * 30, 90, 270);
+    arc(this.x + p * 125, this.y + p * 30, p * 33, p * 30, -90, 90);
+    fill(255, 255, 255);
+    arc(this.x + p * 85, this.y + p * 30, p * 15, p * 10, 180, 360);
+    arc(this.x + p * 85, this.y + p * 30, p * 15, p * 10, 0, 180);
+    arc(this.x + p * 115, this.y + p * 30, p * 15, p * 10, 180, 360);
+    arc(this.x + p * 115, this.y + p * 30, p * 15, p * 10, 0, 180);
+    fill(110, 42, 42);
+    ellipse(this.x + p * 85, this.y + p * 30, p * 8, p * 8);
+    ellipse(this.x + p * 115, this.y + p * 30, p * 8, p * 8);
+    fill(0, 0, 0);
+    ellipse(this.x + p * 85, this.y + p * 30, p * 5, p * 5);
+    ellipse(this.x + p * 115, this.y + p * 30, p * 5, p * 5);
+    stroke(0, 0, 0);
+    fill(255,219,172);
+    arc(this.x + p * 100, this.y + p * 44, p * 10, p * 10, 90, 270);
+    noStroke();
+    fill(255, 0, 0);
+    arc(this.x + p * 100, this.y + p * 57, p * 20, p * 20, 360, 540);
+    
+    // Hair
+    fill(117, 68, 68);
+    ellipse(this.x + p * 69, this.y + p * 12, p * 15, p * 15);
+    ellipse(this.x + p * 65, this.y + p * 16, p * 15, p * 15);
+    ellipse(this.x + p * 74, this.y + p * 4, p * 15, p * 15);
+    ellipse(this.x + p * 76, this.y + p * 12, p * 15, p * 15);
+    ellipse(this.x + p * 82, this.y + p * -2, p * 15, p * 15);
+    ellipse(this.x + p * 89, this.y + p * -9, p * 15, p * 15);
+    ellipse(this.x + p * 72, this.y + p * -4, p * 15, p * 15);
+    ellipse(this.x + p * 65, this.y + p * 8, p * 15, p * 15);
+    ellipse(this.x + p * 86, this.y + p * 3, p * 15, p * 15);
+    ellipse(this.x + p * 80, this.y + p * -7, p * 15, p * 15);
+    ellipse(this.x + p * 101, this.y + p * -13, p * 15, p * 15);
+    ellipse(this.x + p * 94, this.y + p * 8, p * 15, p * 15);
+    ellipse(this.x + p * 98, this.y + p * -1, p * 15, p * 15);
+    ellipse(this.x + p * 102, this.y + p * -8, p * 15, p * 15);
+    ellipse(this.x + p * 106, this.y + p * 8, p * 15, p * 15);
+    ellipse(this.x + p * 115, this.y + p * 7, p * 15, p * 15);
+    ellipse(this.x + p * 114, this.y + p * -9, p * 15, p * 15);
+    ellipse(this.x + p * 122, this.y + p * 0, p * 15, p * 15);
+    ellipse(this.x + p * 107, this.y + p * 1, p * 15, p * 15);
+    ellipse(this.x + p * 126, this.y + p * 12, p * 15, p * 15);
+    ellipse(this.x + p * 118, this.y + p * -4, p * 15, p * 15);
+    ellipse(this.x + p * 131, this.y + p * 5, p * 15, p * 15);
+    ellipse(this.x + p * 133, this.y + p * 12, p * 15, p * 15);
+    if(this.initialOption === true)
+    {
+        // Shirt Letters
+        fill(this.shirtColor);
+        stroke(255, 255, 255);
+        strokeWeight(3 * p);
+        arc(this.x + p * 86, this.y + p * 110, p * 20, p * 27, 50, 300);
+        noFill();
+        stroke(255, 255, 255);
+        beginShape();
+        curveVertex(this.x + p * 219,  this.y + p * 202);
+        curveVertex(this.x + p * 125,  this.y + p * 103);
+        curveVertex(this.x + p * 108,  this.y + p * 107);
+        curveVertex(this.x + p * 126,  this.y + p * 115);
+        curveVertex(this.x + p * 110, this.y + p * 121);
+        curveVertex(this.x + p * 12, this.y + p * 56);
+        endShape();
+    }
+    
+    // Glasses
+    noStroke();
+    fill(0, 0, 0);
+    ellipse(this.x + p * 85, this.y + p * 0, p * 20, p * 15);
+    ellipse(this.x + p * 115, this.y + p * 0, p * 20, p * 15);
+    fill(111, 169, 232);
+    ellipse(this.x + p * 85, this.y + p * 0, p * 15, p * 10);
+    ellipse(this.x + p * 115, this.y + p * 0, p * 15, p * 10);
+    stroke(0, 0, 0);
+    noFill();
+    strokeWeight(2 * p);
+    arc(this.x + p * 100, this.y + p * 4, p * 15, p * 15, 180, 360);
+    line(this.x + p * 65, this.y + p * 15, this.x + p * 75, this.y + p * 0);
+    line(this.x + p * 135, this.y + p * 15, this.x + p * 125, this.y + p * 0);
+}; //Calin draw
+
+var startCalin = new Calin(268, 238, 70, color(9, 79, 176), true);// Start Scene Calin
+
+var calinSelection = new Calin(25, 111, 75, color(9, 79, 176), true);// Character Selection Calin
+
+var calin = new Calin(162, 111, 50, color(9, 79, 176), true);//Game object Calin
+
+var calinEnd = new Calin(207, 45, 81, color(9, 79, 176), true); //end screen calin
+
+var faylynn = function(x, y, height, shirtColor, initials) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+    this.shirtColor = shirtColor;
+    this.initials = initials;
+};
+
+faylynn.prototype.draw = function() {
+    var p = this.height/100;
+
+     noStroke();
+     //head
+     
+        fill(255, 224, 178);
+        rect(this.x + p *43, this.y + p *82, p *20, p *20); //neck
+        
+        ellipse(this.x + p *51, this.y + p *44, p *86, p *100);   // head
+        
+        fill(128, 99, 74);
+        ellipse(this.x + p *69, this.y + p *37, p *15, p *15);    // right     eye
+        ellipse(this.x + p *32, this.y + p *37, p *15, p *15);    // left     eye
+        
+        fill(255, 255, 255);
+        arc(this.x + p *52, this.y + p *74, p *33, p *14, -16, 196);      //mouth
+        
+        fill(168, 119, 98);
+        arc (this.x + p *21, this.y + p *31, p *43, p *96, 113, 322 ); //left hair
+        arc (this.x + p *80, this.y + p *34, p *43, p *96, 228, 416 ); //right hair
+        arc (this.x + p *34, this.y + p *12, p *46, p *81, 123, 331 ); //left bang
+        arc (this.x + p *66, this.y + p *12, p *46, p *80, 208, 414 ); //left bang
+        arc (this.x + p *1, this.y + p *60, p *34, p*168, 305, 429 ); //left long hair
+        arc (this.x + p *102, this.y + p *65, p *34, p *172, 127, 236 ); //right long hair
+        arc (this.x + p *5, this.y + p *111, p *34, p *133, 305, 429 ); //left longer hair
+        arc (this.x + p *106, this.y + p *100, p *35, p *153, 106, 250 ); //right longer hair
+        arc (this.x + p *54, this.y + p *56, p *4, p *10,-111,139);
+        
+        fill(245, 174, 174);
+        arc(this.x + p *52, this.y + p *74, p *38, p *-5, -16, 196); //top lip
+        arc(this.x + p *52, this.y + p *82, p *23, p *4, -31, 219); //bottom lip
+        
+        stroke(0, 0, 0);
+        strokeWeight(4);
+        line(this.x + p *13, this.y - p *11, this.x + p *4, this.y + p *12); //glasses left
+        stroke(0, 0, 0);
+        strokeWeight(4);
+        line(this.x + p *87, this.y - p *13, this.x + p *95, this.y + p *13); //glasses right
+        fill(89, 87, 87);
+        ellipse(this.x + p *30, this.y - p *14, p *38, p *-9); //glasses left top
+        ellipse(this.x + p *69, this.y - p *14, p *38, p *-9); //glasses right top
+        noStroke();
+    
+        //body
+        
+        //shirt
+
+    noStroke();
+    fill(this.shirtColor);   //shirt color
+    quad(this.x + p *11, this.y + p *112, this.x + p *61, this.y + p *98, this.x + p*79, this.y + p *174, this.x - p *17, this.y + p *181); //left shirt
+    quad(this.x + p *119, this.y + p *193, this.x + p *98, this.y + p *127, this.x + p *60, this.y + p *99, this.x + p *14, this.y + p *172); //right shirt
+    fill(0, 0, 0);
+    
+    //end of shirt
+    
+    if(this.initials === true) {
+        
+        //initals
+    
+        rect(this.x + p *24, this.y + p *129, p *25, p *3); //initials top of F
+        rect(this.x + p *23, this.y + p *129, p *4, p *31); // Left of F
+        rect(this.x + p *23, this.y + p *142, p *17, p *3); // bottom of F
+        stroke(0, 0, 0);
+        strokeWeight(3);
+        line(this.x + p *84, this.y + p *129, this.x + p *68, this.y + p *161); //right of V
+        stroke(0, 0, 0);
+        strokeWeight(3);
+        line(this.x + p *56, this.y + p *130, this.x + p *68, this.y + p *161); //left of V
+    }
+    // end of initials
+    
+    noStroke();
+    fill(242, 197, 75);
+    arc(this.x + p *52, this.y + p *106, p *43, p *5, -36, 212); //necklace
+
+};
+
+var startFaylynn = new faylynn(31, 243, 53, color(219, 70, 117), true);// Start Scene faylynn
+
+var faylynnSelection = new faylynn(270, 111, 57, color(219, 70, 117), true);// character selection screen
+
+var faylynnGame = new faylynn(103, 111, 40, color(219, 70, 117), true);// game object faylynn
+
+var faylynnEnd = new faylynn(102,43,61, color(219, 70, 117), true); //end screen object
+
+//Buttons
+
+
+//Appliances
+// STOVE (must be on the left)
+var Stove = function(x, y, height)
+{
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Stove.prototype.draw = function() {
+    stroke(112, 102, 91);
+    strokeWeight(1);
+    fill(204, 224, 224);
+    rect(this.x, this.y, this.height, this.height); //stove body
+    fill(107, 68, 68);
+    rect(this.x, this.y + 0, this.height - 43, this.height); //stove brown left bar
+    ellipse(this.x + 26, this.y + 24, this.height -80, this.height - 19); //stove brown circle
+    stroke(255, 0, 0);
+    strokeWeight(2);
+    ellipse(this.x + 27, this.y + 24, this.height -70, this.height - 29); //stove red circle
+};
+
+var stoveObj1 = new Stove(0, 180, 49);
+
+//Cutting Board
+var CuttingBoard = function(x, y, height)
+{
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+CuttingBoard.prototype.draw = function() {
+    stroke(135, 114, 64);
+    strokeWeight(1);
+    fill(175, 203, 242);
+    rect(this.x, this.y, this.height, this.height); //cutting board edge
+    fill(255, 255, 255);
+    rect(this.x + 5, this.y + 5, this.height - 10, this.height-10);//cutting board white part
+};
+
+var cuttingBoardObj = new CuttingBoard(276, 350, 49);
+
+//Knife
+var Knife = function(x, y, height)
+{
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Knife.prototype.draw = function() 
+{
+    fill(0, 0, 0);
+    rect(this.x, this.y, this.height+ 13, this.height + 3);
+    fill(207, 207, 207);
+    rect(this.x + 15, this.y, this.height+ 31, this.height + 3);
+    arc(this.x + 32, this.y + 5, this.height + 31, this.height + 7, 0, 180);
+};
+
+var knifeObj = new Knife (277, 373, 2);
+
+//Fryer
+var Fryer = function(x, y, height)
+{
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Fryer.prototype.draw = function() 
+{
+    stroke(135, 118, 83);
+    strokeWeight(1);
+    fill(107, 68, 68);
+    rect(this.x, this.y, this.height, this.height);
+    fill(224, 232, 156);
+    rect(this.x +5, this.y +4, this.height +-16, this.height +-8); //inside fryer
+    fill(191, 227, 217);
+    rect(this.x +43, this.y, this.height - 44, this.height); //right bar
+};
+
+var fryerObj1 = new Fryer (351, 198, 49);
+var fryerObj2 = new Fryer (351, 247, 49);
+
+//Fry Basket
+var FryBasket = function(x, y, height)
+{
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+FryBasket.prototype.draw = function()
+{
+    fill(94, 74, 94);
+    stroke(122, 157, 222);
+    strokeWeight(2);
+    line(this.x +10, this.y + 10, this.x + 34, this.y + 10);
+    line(this.x +10, this.y + 10, this.x + 10, this.y + 38);
+    line(this.x +10, this.y + 38, this.x + 34, this.y + 38);
+    line(this.x +34, this.y + 10, this.x + 34, this.y + 38);
+    fill(109, 125, 181);
+    strokeWeight(1);
+    rect(this.x, this.y + 20, 10, 8);
+    for (var j = 0; j < 5; ++j)
+    {
+        strokeWeight(1);
+        line(this.x + 10, this.y + 14 + 5 *j, this.x +34, this.y + 14 + 5 *j);
+    }
+};
+
+var fryBasketObj1 = new FryBasket(350, 199, 49);
+var fryBasketObj2 = new FryBasket(350, 249, 49);
+
+//Food Bin
+var FoodBin = function(x, y, height)
+{
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+FoodBin.prototype.draw= function()
+{
+    stroke(153, 124, 78);
+    strokeWeight(1);
+    fill(170, 189, 235);
+    rect(this.x, this.y, this.height, this.height);
+    fill(229, 255, 255);
+    rect(this.x +5, this.y + 5, this.height - 10, this.height - 10);
+};
+
+var foodBinObj1 = new FoodBin (81, 350, 49);
+var foodBinObj2 = new FoodBin (130, 350, 49);
+var foodBinObj3 = new FoodBin (179, 350, 49);
+var foodBinObj4 = new FoodBin (227, 350, 49);
+
+//Serving Counter
+var ServingCounter = function(x, y, height)
+{
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+ServingCounter.prototype.draw = function()
+{
+    stroke(115, 97, 62);
+    fill(189, 225, 255); //main counter
+    rect(this.x, this.y, this.height + 68, this.height);
+    fill(79, 68, 56); 
+    rect(this.x + 4, this.y + 4, this.height - 8, this.height - 8); //register
+    fill(246, 255, 178);
+    ellipse(this.x + 95, this.y + 24, this.height - 30, this.height - 30); //bell
+    ellipse(this.x + 95, this.y + 24, this.height - 45, this.height - 45); //bell button
+};
+
+var servingCounterObj = new ServingCounter (49, 100, 49);
+
+// Plate
+var Plate = function(x, y, height) 
+{
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+var Plate2 = function(x, y, height) 
+{
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Plate2.prototype.draw = function() {
+    fill(242, 242, 242);
+    ellipse(this.x, this.y+2, this.height, this.height-105);
+    stroke(156, 156, 156);
+    ellipse(this.x, this.y, this.height -0, this.height-115);
+    
+    fill(227, 227, 227);
+    noStroke();
+    
+    ellipse(118,232,127,33);
+    
+    ellipse(164,254,109,79);
+    
+    ellipse(206,249,189,79);
+    
+    ellipse(167,264,120,79);
+};
+
+Plate.prototype.draw = function() {
+    fill(255, 255, 255);
+    ellipse(this.x, this.y, this.height, this.height);
+    stroke(217, 217, 217);
+    ellipse(this.x, this.y, this.height -10, this.height-10);
+};
+
+var plateObj = new Plate(227, 125, 40);
+
+var plate2Obj = new Plate2(198, 212, 351);  //The plate on the splash screen
+
+//Patty
+var Patty = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Patty.prototype.draw = function ()
+{
+    var p = this.height/100;
+    stroke(94, 80, 58);
+    fill(163, 120, 74);
+    ellipse(this.x + p * 145, this.y + p * 160, p * 96, p * 19);     //patty
+}; 
+
+var pattyObj1 = new Patty(foodBinObj1.x - 27, foodBinObj1.y - 30, 36);
+
+var pattyObj2 = new Patty(plateObj.x - 51, plateObj.y - 56, 36);
+
+var pattyObj3 = new Patty(plateObj.x - 333, plateObj.y - 245, 247); //endscreen
+
+//Lettuce
+var Lettuce = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Lettuce.prototype.draw = function ()
+{
+    var p = this.height/100;
+    
+    stroke(168, 217, 130);
+    fill(207, 245, 147);
+    ellipse(this.x + p * 112,this.y + p * 153, p * 35, p * 11);     //left side if lett
+    ellipse(this.x + p * 117,this.y + p * 146, p * 29, p * 14);     //left top lett
+    ellipse(this.x + p * 134,this.y + p * 150, p * 41, p * 14);     //mid lett
+    ellipse(this.x + p * 165,this.y + p * 154, p * 64, p * 14);     //bottom right lett
+    ellipse(this.x + p * 161,this.y + p * 147, p * 35, p * 14);     //top right lett
+    
+}; 
+
+var lettuceObj1 = new Lettuce(foodBinObj2.x - 22, foodBinObj2.y -22, 32);
+
+var lettuceObj2 = new Lettuce(plateObj.x - 46, plateObj.y - 51, 32);
+
+var lettuceObj3 = new Lettuce(plateObj.x - 333, plateObj.y - 302, 221); //endscreen
+
+//Buns
+var Buns = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Buns.prototype.draw = function ()
+{
+    var p = this.height/100;
+    
+    stroke(222, 179, 111);
+    fill(242, 208, 159);
+    arc(this.x + p * 144, this.y + p * 145, p * 96, p * 53, -188, 11); //top bun
+    arc(this.x + p * 145, this.y + p * 166, p * 97,p * 27,-12,197);  //bottom bun
+
+    fill(191, 157, 76);
+    ellipse(this.x + p * 117, this.y + p * 128, p * 6, p * -2); //btm left seed
+    ellipse(this.x + p * 132, this.y + p * 124, p * 6, p * -2); //top left
+    ellipse(this.x + p * 151, this.y + p * 128, p * 6, p * -2); //btm right
+    ellipse(this.x + p * 167, this.y + p * 124, p * 6, p * -2); //top right
+    ellipse(this.x + p * 135, this.y + p * 129, p * 6, p * -2); //btm mid
+    ellipse(this.x + p * 155, this.y + p * 122, p * 6, p * -2); //top mid
+    ellipse(this.x + p * 173, this.y + p * 130, p * 6, p * -2);
+    
+}; 
+
+var bunsTop = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+bunsTop.prototype.draw = function () //endscreen
+{
+    var p = this.height/100;
+    
+    stroke(125, 103, 51);
+    fill(242, 208, 159);
+    arc(this.x + p * 144, this.y + p * 145, p * 96, p * 53, -188, 11); //top bun
+   
+    noStroke();
+    fill(191, 157, 76);
+    ellipse(this.x + p * 117, this.y + p * 128, p * 6, p * -2); //btm left seed
+    ellipse(this.x + p * 132, this.y + p * 124, p * 6, p * -2); //top left
+    ellipse(this.x + p * 151, this.y + p * 128, p * 6, p * -2); //btm right
+    ellipse(this.x + p * 167, this.y + p * 124, p * 6, p * -2); //top right
+    ellipse(this.x + p * 135, this.y + p * 129, p * 6, p * -2); //btm mid
+    ellipse(this.x + p * 155, this.y + p * 122, p * 6, p * -2); //top mid
+    ellipse(this.x + p * 173, this.y + p * 130, p * 6, p * -2);
+    
+}; 
+
+var bunsTopObj = new bunsTop(-214,-226, 241); //endscreen
+
+var bunsBottom = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+bunsBottom.prototype.draw = function () //endscreen
+{
+    var p = this.height/100;
+    
+    stroke(171, 144, 101);
+    fill(242, 208, 159);
+    arc(this.x + p * 145, this.y + p * 166, p * 97,p * 27,-12,197);  //bottom bun
+    noStroke();
+}; 
+var bunsBottomObj = new bunsBottom(-164, -134, 273); //endscreen
+
+
+var bunsObj1 = new Buns(200,321, 36);
+
+var bunsObj2 = new Buns(plateObj.x -52, plateObj.y -56, 36);
+
+//Burger
+var Burger = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Burger.prototype.draw = function ()
+{
+    var p = this.height/100;
+    
+    noStroke();
+    fill(163, 120, 74);
+    ellipse(this.x + p * 145, this.y + p * 160, p * 96, p * 19);     //patty
+    
+    noStroke();
+    fill(207, 245, 147);
+    ellipse(this.x + p * 112,this.y + p * 153, p * 35, p * 11);     //left side if lett
+    ellipse(this.x + p * 117,this.y + p * 146, p * 29, p * 14);     //left top lett
+    ellipse(this.x + p * 134,this.y + p * 150, p * 41, p * 14);     //mid lett
+    ellipse(this.x + p * 165,this.y + p * 154, p * 64, p * 14);     //bottom right lett
+    ellipse(this.x + p * 161,this.y + p * 147, p * 35, p * 14);     //top right lett
+    
+    
+    noStroke();
+    fill(255, 248, 171);
+    quad(this.x + p * 88, this.y + p * 146, this.x + p * 130, this.y + p * 156, this.x + p * 195, this.y + p * 154, this.x + p * 152, this.y + p * 136);  //cheese
+    
+    fill(242, 208, 159);
+    arc(this.x + p * 144, this.y + p * 145, p * 96, p * 53, -188, 11); //top bun
+    arc(this.x + p * 145, this.y + p * 166, p * 97,p * 27,-12,197);  //bottom bun
+
+    fill(191, 157, 76);
+    ellipse(this.x + p * 117, this.y + p * 128, p * 6, p * -2); //btm left seed
+    ellipse(this.x + p * 132, this.y + p * 124, p * 6, p * -2); //top left
+    ellipse(this.x + p * 151, this.y + p * 128, p * 6, p * -2); //btm right
+    ellipse(this.x + p * 167, this.y + p * 124, p * 6, p * -2); //top right
+    ellipse(this.x + p * 135, this.y + p * 129, p * 6, p * -2); //btm mid
+    ellipse(this.x + p * 155, this.y + p * 122, p * 6, p * -2); //top mid
+    ellipse(this.x + p * 173, this.y + p * 130, p * 6, p * -2);
+    
+}; 
+
+var burgerObj1 = new Burger (plateObj.x - 43, plateObj.y - 53, 36);
+
+var burgerObj2 = new Burger(-66, -366, 254); //splashScreen burger
+
+var burgerObj3 = new Burger(-108, 98, 125); //endScreen burger
+
+var Cheese = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Cheese.prototype.draw = function ()
+{
+    var p = this.height/100;
+    
+    stroke(252, 206, 159);
+    fill(255, 234, 0);
+    quad(this.x + p * 88, this.y + p * 146, this.x + p * 130, this.y + p * 156, this.x + p * 195, this.y + p * 154, this.x + p * 152, this.y + p * 136);  //cheese
+    
+}; 
+
+var cheeseObj1 = new Cheese(151, 321, 37);
+
+var cheeseObj2 = new Cheese(plateObj.x - 53 ,plateObj.y - 56, 37);
+
+var cheeseObj3 = new Cheese(plateObj.x + -383 ,plateObj.y - 345, 238); //endscreen
+
+
+// Fries
+var Fries = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+Fries.prototype.draw = function ()
+{
+    var p = this.height/100;
+    noStroke();
+    fill(255, 255, 117);  //light yellow
+    rect(this.x + p * 162, this.y + p * 128, p * 4, p * 43, 4); //middle left top
+    rect(this.x + p * 168, this.y + p * 128, p* 4, p * 43, 4);  //middle right top
+    fill(240, 240, 0); //dark yellow
+    rect(this.x + p * 155, this.y + p * 143, p * 4, p * 24, 4);  //bottom left
+    rect(this.x + p * 174,this.y + p * 143, p * 4, p * 25, 4);  //bottom right
+    fill(255, 239, 94);
+    rect(this.x + p * 165, this.y + p * 127, p * 4, p * 47, 4);  //middle top
+    rect(this.x + p * 158, this.y + p * 134, p * 4, p * 36, 4);  //top left
+    rect(this.x + p * 172, this.y + p * 134, p * 4, p * 35, 4);  //top right
+    
+
+};
+
+var friesObj = new Fries(fryerObj1.x - 101, fryerObj1.y - 84, 72);
+
+var FriesFinal = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+FriesFinal.prototype.draw = function ()
+{
+    var p = this.height/100;
+    noStroke();
+    
+    textAlign(LEFT);
+    
+    fill(255, 255, 117);  //light yellow
+    rect(this.x + p * 162, this.y + p * 128, p * 4, p * 43, 4); //middle left top
+    rect(this.x + p * 168, this.y + p * 128, p* 4, p * 43, 4);  //middle right top
+    fill(240, 240, 0); //dark yellow
+    rect(this.x + p * 155, this.y + p * 143, p * 4, p * 24, 4);  //bottom left
+    rect(this.x + p * 174,this.y + p * 143, p * 4, p * 25, 4);  //bottom right
+    fill(255, 239, 94);
+    rect(this.x + p * 165, this.y + p * 127, p * 4, p * 47, 4);  //middle top
+    rect(this.x + p * 158, this.y + p * 134, p * 4, p * 36, 4);  //top left
+    rect(this.x + p * 172, this.y + p * 134, p * 4, p * 35, 4);  //top right
+    
+    fill(255, 112, 112);
+    quad(this.x + p * 181, this.y + p * 153,this.x + p * 153, this.y+  p * 153, this.x+ p * 156,this.y + p * 179, this.x + p * 179, this.y + p * 179);  //box
+    
+    fill(247, 247, 62);
+    arc(this.x + p * 167, this.y + p * 152, p * 25, p * 27,0, 181); //cut out
+    
+    var scaleFactor = p * 0.5;
+    
+    fill(247, 247, 62);
+    var fontSize = 17 * scaleFactor;
+    textSize(fontSize);
+    text("DD", this.x + p * 162, this.y + p * 173);
+    
+};
+
+var friesFinalObj = new FriesFinal(152, 15, 72);
+
+var friesFinalObj2 = new FriesFinal(-461, -325, 356); //splashScreen fries
+
+var friesFinalObj3 = new FriesFinal(-461, -325, 356); //splashScreen fries
+
+
+var rawfries = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+rawfries.prototype.draw = function ()
+{
+    var p = this.height/100;
+    noStroke();
+    fill(255, 255, 117);  //light yellow
+    rect(this.x + p * 162, this.y + p * 128, p * 4, p * 43, 4); //middle left top
+    rect(this.x + p * 168, this.y + p * 128, p* 4, p * 43, 4);  //middle right top
+    fill(240, 240, 0); //dark yellow
+    rect(this.x + p * 155, this.y + p * 143, p * 4, p * 24, 4);  //bottom left
+    rect(this.x + p * 174,this.y + p * 143, p * 4, p * 25, 4);  //bottom right
+    fill(255, 239, 94);
+    rect(this.x + p * 165, this.y + p * 127, p * 4, p * 47, 4);  //middle top
+    rect(this.x + p * 158, this.y + p * 134, p * 4, p * 36, 4);  //top left
+    rect(this.x + p * 172, this.y + p * 134, p * 4, p * 35, 4);  //top right
+    
+
+};
+
+var rawfriesObj = new rawfries(-387, -766, 280); //splashScreen raw fries
+
+var fridge = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+fridge.prototype.draw = function ()
+{
+    var p = this.height/100;
+    
+    noStroke();
+    //stroke(138, 117, 77);
+    
+    fill(237, 255, 173);
+    rect(this.x + p * 50, this.y + p * 50, p * 50, p * 50); //main box
+    fill(209, 145, 92);
+    rect(this.x + p * 52, this.y + p * 52, p * 46, p * 46); //side bar
+    fill(176, 216, 255);
+    rect(this.x + p * 56, this.y + p * 56, p * 38, p * 37); // blue cooler part
+    
+    fill(237, 124, 124); //red squares
+    rect(this.x + p * 59, this.y + p * 76, p * 15, p * 15,5); //btm left red
+    rect(this.x + p * 75, this.y + p * 76, p * 15, p * 15,5); //btm right red
+    rect(this.x + p * 59, this.y + p * 59, p * 15, p * 15,5); //top left
+    rect(this.x + p * 75, this.y + p * 59, p * 15, p * 15,5); //top right
+     
+    fill(255, 242, 242); //white squares
+    rect(this.x + p * 63, this.y + p * 79, p * 7, p * 7,2); //btm left white
+    rect(this.x + p * 63, this.y + p * 62, p * 7, p * 7,2); //top left white
+    rect(this.x + p * 79, this.y + p * 79, p * 7, p * 7,2); //btm right white
+    rect(this.x + p * 79, this.y + p * 62, p * 7, p * 7,2); //top right white
+    
+    fill(107, 107, 107); //gray tops
+    rect(this.x + p * 60, this.y + p * 74, p * 13, p * 1,2); //top left gray btm
+    rect(this.x + p * 76, this.y + p * 74, p * 13, p * 1,2); //top right gray btm
+    rect(this.x + p * 60, this.y + p * 90, p * 13, p * 1,2); //btm left gray btm
+    rect(this.x + p * 76, this.y + p * 90, p * 13, p * 1,2); //btm right gray btm
+    
+                        // gray btms
+    rect(this.x + p * 76, this.y + p * 60, p * 13, p * 1,2); //top right gray top
+    rect(this.x + p * 60, this.y  + p * 60, p * 13, p * 1,2); //top left gray top
+    rect(this.x + p * 60, this.y + p * 77, p * 13, p * 1,2); //btm left gray top 
+    rect(this.x + p * 76, this.y + p  * 77, p * 13, p * 1,2); //btm right gray top
+
+
+};
+
+var fridgeObj1 = new fridge(-52, 213, 102);
+
+var soda = function(x, y, height) {
+    this.x = x;
+    this.y = y;
+    this.height = height;
+};
+
+soda.prototype.draw = function ()
+{
+    var p = this.height/100;
+    
+    var scaleFactor = p * 0.5;
+    
+    noStroke();
+    textAlign(LEFT);
+    
+    fill(255, 105, 105);
+    rect(this.x + p * 131, this.y + p * 132, p * 25, p * 45, 10); //red bottle
+    
+    fill(255, 255, 255);
+    rect(this.x + p * 134, this.y + p * 139,p * 20, p * 22, 16);  //white lable
+    
+    fill(255, 0, 0);
+    var fontSize = 15 * scaleFactor;
+    textSize(fontSize);
+    text("S", this.x + p * 135, this.y + p * 158); //S
+    
+    fill(255, 0, 0);
+    textSize(fontSize);
+    text("O", this.x + p * 139, this.y + p * 155);   // O
+    
+    fill(255, 0, 0);
+    textSize(fontSize);
+    text("D",this.x + p * 143, this.y + p * 152);   // D
+    
+    fill(255, 0, 0);
+    textSize(fontSize);
+    text("A", this.x + p * 147, this.y + p * 149);   //A
+    
+    var fontSize = 7 * scaleFactor;
+    textSize(fontSize);
+    fill(255, 255, 255);
+    text("Dish Dash", this.x + p * 136, this.y + p * 168);   //dish dash logo
+    
+    fill(112, 112, 112);
+    rect(this.x + p * 131, this.y + p * 176, p * 25,4,20); //bottom part
+    
+    ellipse(this.x + p * 143, this.y + p * 133, p* 25, p * 7); //top part
+    
+    fill(84, 82, 82);
+    
+    ellipse(this.x + p * 143, this.y + p * 133, p* 23, p * 5);
+    
+    fill(112, 112, 112);
+    ellipse(this.x + p * 143, this.y + p * 133, p* 20, p * 4);
+    
+};
+
+var sodaObj1 = new soda(-185, -164, 227);
+
+var sodaObj2 = new soda(-429, -413, 370); //splash screen soda
+
+var Button = function(config) {                     //Khan button
+    this.x = config.x || 0;
+    this.y = config.y || 0;
+    this.width = config.width || 150;
+    this.height = config.height || 50;
+    this.label = config.label || "Click";
+    this.onClick = config.onClick || function() {};
+};            //copy of button function
+
+Button.prototype.draw = function() {
+    stroke(166, 150, 93);
+    strokeWeight(1);
+    fill(255, 242, 242);
+    rect(this.x, this.y, this.width, this.height, 5);   //prototype for drawing button
+    fill(117, 88, 41);
+    textSize(19);
+    textAlign(CENTER, TOP);
+    text(this.label, this.x+74, this.y+this.height/4);
+
+};
+
+Button.prototype.isMouseInside = function() {   //prototype for the inside the button
+    return mouseX > this.x &&
+           mouseX < (this.x + this.width) &&
+           mouseY > this.y &&
+           mouseY < (this.y + this.height);
+};
+
+Button.prototype.handleMouseClick = function() {
+    if (this.isMouseInside()) {
+        this.onClick();
+    }
+};
+
+var btnStart = new Button({
+    x: 12,
+    y: 332,
+    label: "Start",
+    onClick: function() {
+        currentScene = 1;    }
+});   // start button
+
+var btnHowToPlay = new Button({
+    x: 235,
+    y: 332,
+    label: "How to Play",
+    onClick: function() {
+        currentScene = 1;    }
+});   // how to play button
+
+var btnGameStart = new Button ({
+    x: 125,
+    y: 297,
+    label: "Play",
+    onClick: function() {
+        currentScene = 1;    }
+});  //play game button
+
+var btnPressHere = new Button ({
+    x: 115,
+    y: 20,
+    label: "Start Order",
+    onClick: function() {
+        currentScene = 2; 
+        m = millis();
+        
+    }
+    
+}); //press here to start order button
+
+
+
+//Player Movement
+var keys = [];
+
+var keyPressed = function()
+{
+    keys[keyCode] = true;
+};
+
+var keyReleased = function()
+{
+    keys[keyCode] = false;
+};
+
+//Different Screen Functionsaw
+var splashScreen = function () {
+    background(255, 166, 166);
+    
+    plate2Obj.draw();
+
+rotate(29);
+
+burgerObj2.draw();
+
+rotate(-35);
+
+sodaObj2.draw();
+
+rotate(127);
+
+rawfriesObj.draw();
+
+rotate(-128);
+
+friesFinalObj2.draw();
+
+resetMatrix();
+
+startFaylynn.draw();
+
+btnStart.draw();
+
+btnHowToPlay.draw();
+
+startCalin.draw();
+
+   fill(255, 247, 176);
+    textSize(58);
+    text("Dish Dash", 192, 21);
+    
+    fill(105, 54, 16);
+    textSize(58);
+    text("Dish Dash", 190, 19);
+};
+
+var howToPlayScreen = function () {
+    background(0, 200, 255);
+    fill(255, 255, 255);
+    rect(25, 25, 350, 319);
+    fill(0, 0, 0);
+    textSize(25);
+    text("How to Play", 187, 47); // header
+    textSize(17);
+    text("The main goal is to complete as many orders before the time runs out to score points. Each customer will give you an order and you must complete it in the given time. Follow the order instructions and select the right ingredients to make a burger. Click on the soda machine to get a soda and double click on the fryers to give you some fries.", 39, 100, 331, 369);
+    
+    textSize(20);
+    text("<- Return", 200, 377);
+};
+
+var characterScreen = function()
+{
+    background(255, 255, 181);
+    
+    textSize(36);
+    fill(145, 113, 24);
+    text("Character Selection", 202, 36);
+    
+    btnGameStart.draw();
+    
+    calinSelection.draw();
+    
+    faylynnSelection.draw();
+    
+    if (mouseX >=  65 && mouseX <= 135 && mouseY >= 90 && mouseY <= 215){
+        textSize(15);
+        fill(99, 76, 18);
+        text("Calin Smith", 100, 240);
+    }
+    
+    if (mouseX >=  265 && mouseX <= 335 && mouseY >= 90 && mouseY <= 220){
+        textSize(15);
+        fill(99, 76, 18);
+        text("Faylynn Vidrio", 302, 240);
+    }
+    
+    if (mouseX >=  65 && mouseX <= 135 && mouseY >= 90 && mouseY <= 215 && mouseIsPressed){
+        currentCharacter = calin;
+        characterSelected = true;
+    }
+    
+    if (mouseX >=  265 && mouseX <= 335 && mouseY >= 90 && mouseY <= 220 && mouseIsPressed){
+        currentCharacter = faylynn;
+        characterSelected = true;
+    }
+    
+    if (currentCharacter === calin)
+    {
+        fill(69, 158, 20);
+        noStroke();
+        rect(calinSelection.x +30, calinSelection.y - 23, 90, 144);
+        calinSelection.draw();
+    }
+    
+     if (currentCharacter === faylynn)
+    {
+        fill(69, 158, 20);
+        noStroke();
+        rect(faylynnSelection.x - 15, faylynnSelection.y - 23, 90, 144);
+        faylynnSelection.draw();
+    }
+    
+    if (characterSelected === false)
+    {
+        fill(255, 0, 0);
+        text("Please select a character", mouseX, mouseY);
+    }
+    
+};
+
+
+var gameScreen = function () {
+    
+    background(5, 162, 230);
+    for( var i = 0; i < 10; ++i) // Floor pattern
+    {
+        for (var j = 0; j < 10; ++j)
+        {
+        fill(247, 231, 195); //floor
+        stroke(184, 158, 87);
+        strokeWeight(1);
+        rect( 0 +j*50, 0+i*50,50,50);  
+        }
+        
+    }
+    
+    var currentSecond = millis();
+    
+    noStroke();
+    fill(247, 185, 185); //Counters
+    rect(1,101,406,49);  //top
+    rect(1,143,49,208);  //left
+    rect(350,145,49,208); //right
+    rect(1,350,406,49);
+    
+    stoveObj1.draw();   //Stoves
+    
+    cuttingBoardObj.draw(); //Cutting board
+    
+    knifeObj.draw();    //Knife
+    
+    fryerObj1.draw();   //Fryers
+    fryerObj2.draw();
+    
+    fryBasketObj1.draw();   //Fry Baskets
+    fryBasketObj2.draw();
+    
+    foodBinObj1.draw(); //Food Bins
+    foodBinObj2.draw();
+    foodBinObj3.draw();
+    foodBinObj4.draw();
+    
+    servingCounterObj.draw();
+    
+    plateObj.draw();
+    
+    pattyObj1.draw();
+    
+    lettuceObj1.draw();
+    
+    cheeseObj1.draw();
+    
+    bunsObj1.draw();
+    
+    fridgeObj1.draw();
+    
+    btnPressHere.draw();
+    
+    if (drawPatty === true)
+    {
+        pattyObj2.draw();
+    }
+    if( drawLettuce === true)
+    {
+        lettuceObj2.draw();
+    }
+    
+    if( drawCheese === true)
+    {
+        cheeseObj2.draw();
+    }
+    if( drawBuns === true)
+    {
+        bunsObj2.draw();
+    }
+    
+    if (drawFries === true)
+    {
+        friesObj.draw();
+    }
+    
+    if (drawFriesFinal === true)
+    {
+        friesFinalObj.draw();
+    }
+    
+    if(drawPatty === true && drawLettuce === true && drawCheese === true && drawBuns === true)
+    {
+        orderFin = true;
+    }
+    
+    if(orderFin === true)
+    {
+        fill(0, 0, 0);
+        textSize(15);
+        textAlign(CENTER);
+        text("Order Up!", plateObj.x, plateObj.y - 40);
+        
+    }
+    
+    if(currentCharacter === calin)
+    {
+        calin.draw();
+    }
+    
+    if(currentCharacter === faylynn)
+    {
+        faylynnGame.draw();
+    }
+    
+    if(startOrder === true)
+    {
+        startTimer = true;
+    }
+    
+    if(startTimer === true)
+    {
+        stroke(158, 122, 55);
+        fill(255, 234, 232);
+        rect(293,9,100,49, 10);
+        fill(255, 0, 0);
+        text(round((millis() - m) / 1000) + " seconds", 343, 20);
+    }
+    
+    if (round((millis() - m) / 1000) >= 5 && startOrder) 
+    {
+    currentScene = 4;
+    }
+
+
+    //Fryer detection
+    if ((calin.x + 70 >= fryerObj1.x - 15 || faylynnGame.x + 30 >= fryerObj1.x - 10) && (calin.x <= fryerObj1.x + 49 || faylynnGame.x <= fryerObj1.x) && (calin.y + 50 >= fryerObj1.y || faylynnGame.y >= fryerObj1.y) && (calin.y +50 <= fryerObj1.y + 49 || faylynnGame.y <= fryerObj1.y + 29))
+    {
+        fill(0, 0, 0);
+        textSize(15);
+        text ("[click x2]", fryerObj1.x + 17, fryerObj1.y + 14);
+    }
+    
+    else if ((calin.x + 70 >= fryerObj2.x - 15 || faylynnGame.x + 30 >= fryerObj2.x - 10) && (calin.x <= fryerObj2.x + 49 || faylynnGame.x <= fryerObj2.x) && (calin.y + 50 >= fryerObj2.y || faylynnGame.y >= fryerObj2.y) && (calin.y +50 <= fryerObj2.y + 49 || faylynnGame.y <= fryerObj2.y + 29))
+    {
+        fill(0, 0, 0);
+        textSize(15);
+        text ("[click x2]", fryerObj2.x + 19, fryerObj2.y + 14);
+    }
+    
+    //Food bin detection
+    if ((calin.x + 70 >= foodBinObj1.x +30 || faylynnGame.x + 20 >= foodBinObj1.x) && (calin.x <= foodBinObj1.x + 11 || faylynnGame.x + 20 <= foodBinObj1.x + 40) && (calin.y >= foodBinObj1.y - 15 || faylynnGame.y + 75 >= foodBinObj1.y -15))
+    {
+        fill(0, 0, 0);
+        textSize(15);
+        text ("[click]", foodBinObj1.x + 26, foodBinObj1.y + 6);
+    }
+    
+    else if ((calin.x + 70 >= foodBinObj2.x || faylynnGame.x + 20 >= foodBinObj2.x) && (calin.x <= foodBinObj2.x + 11 || faylynnGame.x + 20 <= foodBinObj2.x + 40) && (calin.y >= foodBinObj2.y - 15 || faylynnGame.y + 75 >= foodBinObj2.y -15))
+    {
+        fill(0, 0, 0);
+        textSize(15);
+        text ("[click]", foodBinObj2.x + 26, foodBinObj2.y + 6);
+    }
+    
+    else if ((calin.x + 70 >= foodBinObj3.x || faylynnGame.x + 20 >= foodBinObj3.x) && (calin.x <= foodBinObj3.x + 11 || faylynnGame.x + 20 <= foodBinObj3.x + -14) && (calin.y >= foodBinObj3.y - 15 || faylynnGame.y + 75 >= foodBinObj3.y -15))
+    {
+        fill(0, 0, 0);
+        textSize(15);
+        text ("[click]", foodBinObj3.x + 26, foodBinObj3.y + 6);
+    }
+    
+    else if ((calin.x + 70 >= foodBinObj4.x || faylynnGame.x + 20 >= foodBinObj4.x) && (calin.x <= foodBinObj4.x + 11 || faylynnGame.x + 20 <= foodBinObj4.x + -14) && (calin.y >= foodBinObj4.y - 15 || faylynnGame.y + 75 >= foodBinObj4.y -15))
+    {
+        fill(0, 0, 0);
+        textSize(15);
+        text ("[click]", foodBinObj4.x + 26, foodBinObj4.y + 6);
+    }
+};
+
+var endScreen = function() {
+    background(255, 173, 211);      //endScreen background color
+    
+    //faylynnEnd.draw();
+    
+    //calinEnd.draw();
+    textAlign(CENTER,LEFT);
+    fill(255, 255, 255);
+    rect(52,150,311,137,10);
+    fill(255, 43, 43);
+    textSize(50);
+    text("TIMES OUT", 204,203);
+    fill(255, 0, 0);
+    text("score: " + score, 200, 259);   // score tracker
+    
+    //burgerObj3.draw();
+    
+    rotate(11);
+    pattyObj3.draw();
+    
+    rotate(-17);
+    lettuceObj3.draw();
+    
+    rotate(-4);
+    cheeseObj3.draw();
+    
+    rotate(-6);
+    bunsTopObj.draw();
+    
+    rotate(23);
+    bunsBottomObj.draw();
+};
+
+draw = function() {
+    if(currentScene === 0) {
+    splashScreen();
+    }
+    
+    else if (currentScene === 1) {
+        characterScreen();
+    }
+    
+    else if (currentScene === 2) {
+        gameScreen();
+        
+        
+        if(keys[87])
+        {
+            calin.y-=a;
+            if(calin.y < 100){
+                calin.y = 100;
+            }
+            
+            faylynnGame.y-=a;
+            if(faylynnGame.y < 95)
+            {
+                faylynnGame.y = 95;
+            }
+        }
+        if(keys[83])
+        {
+            calin.y+=a;
+            if(calin.y > 285){
+                calin.y=285;
+            }
+            
+            faylynnGame.y+=a;
+            if(faylynnGame.y >= 275)
+            {
+                faylynnGame.y = 275;
+            }
+        }
+        if(keys[68])
+        {
+            calin.x+=a;
+            if(calin.x > 280){
+                calin.x = 280;
+            }
+            
+            faylynnGame.x+=a;
+            if(faylynnGame.x >= 305)
+            {
+                faylynnGame.x = 305;
+            }
+        }
+        if(keys[65])
+        {
+            calin.x-=a;
+            if(calin.x < 20){
+                calin.x = 20;
+            }
+            
+            faylynnGame.x-=a;
+            if(faylynnGame.x <= 55)
+            {
+                faylynnGame.x = 55;
+            }
+            
+            if (drawFries === false)
+            {
+                friesObj.x = 400;
+            }
+        }
+    }
+    
+    else if (currentScene === 3){
+        howToPlayScreen();
+    }
+    
+    else if (currentScene === 4){
+        endScreen();
+    }
+};
+
+
+mouseClicked = function(){
+    if (currentScene === 0 && btnStart.isMouseInside()){
+        currentScene = 1;
+    }
+    
+    else if (currentScene === 1 && btnGameStart.isMouseInside() &&(currentCharacter === calin || currentCharacter === faylynn)){
+        currentScene = 2;
+        characterSelected = true;
+    }
+    
+    else if (currentScene === 1 && btnGameStart.isMouseInside())
+    {
+        characterSelected = false;
+    }
+    
+    else if (currentScene === 0 && btnHowToPlay.isMouseInside()){
+        currentScene = 3;
+    }
+    
+    else if (currentScene === 3 && mouseX >= 155 && mouseX<= 250 && mouseIsPressed)
+    {
+        currentScene = 0;
+    }
+    
+    else if (currentScene === 2 && btnPressHere.isMouseInside()){
+       if(!startOrder) {
+           
+        startOrder = true;
+        m = millis();
+    }
+    }
+    //
+    
+    else if ((calin.x + 70 >= foodBinObj1.x +30 || faylynnGame.x + 20 >= foodBinObj1.x) && (calin.x <= foodBinObj1.x + 11 || faylynnGame.x + 20 <= foodBinObj1.x + 70) && (calin.y >= foodBinObj1.y - 15 || faylynnGame.y + 75 >= foodBinObj1.y -15) && mouseIsPressed)
+    {
+      drawPatty = true;
+    }
+    
+    else if ((calin.x + 70 >= foodBinObj2.x +30 || faylynnGame.x + 20 >= foodBinObj2.x + 30) && (calin.x <= foodBinObj2.x + 11 || faylynnGame.x + 20 <= foodBinObj2.x + 70) && (calin.y >= foodBinObj2.y - 15 || faylynnGame.y + 75 >= foodBinObj2.y -15) && mouseIsPressed)
+    {
+       drawLettuce = true;
+    }
+    
+     else if ((calin.x + 70 >= foodBinObj3.x +30 || faylynnGame.x + 20 >= foodBinObj3.x) && (calin.x <= foodBinObj3.x + 11 || faylynnGame.x + 20 <= foodBinObj3.x + 70) && (calin.y >= foodBinObj3.y - 15 || faylynnGame.y + 75 >= foodBinObj3.y -15) && mouseIsPressed)
+    {
+       drawCheese = true;
+    }
+    
+    else if ((calin.x + 70 >= foodBinObj4.x +30 || faylynnGame.x + 20 >= foodBinObj4.x) && (calin.x <= foodBinObj4.x + 11 || faylynnGame.x + 20 <= foodBinObj4.x + 70) && (calin.y >= foodBinObj4.y - 15 || faylynnGame.y + 75 >= foodBinObj4.y -15) && mouseIsPressed)
+    {
+       drawBuns = true;
+    }
+    
+    else if ((calin.x + 70 >= fryerObj1.x - 15 || faylynnGame.x + 30 >= fryerObj1.x - 10) && (calin.x <= fryerObj1.x + 49 || faylynnGame.x <= fryerObj1.x) && (calin.y + 50 >= fryerObj1.y || faylynnGame.y >= fryerObj1.y) && (calin.y +50 <= fryerObj1.y + 49 || faylynnGame.y <= fryerObj1.y + 29) && mouseIsPressed && drawFries === false)
+    {
+        drawFries = true;
+    }
+    
+    else if ((calin.x + 70 >= fryerObj2.x - 15 || faylynnGame.x + 30 >= fryerObj2.x - 10) && (calin.x <= fryerObj2.x + 49 || faylynnGame.x <= fryerObj2.x) && (calin.y + 50 >= fryerObj2.y || faylynnGame.y >= fryerObj2.y) && (calin.y +50 <= fryerObj2.y + 49 || faylynnGame.y <= fryerObj2.y + 29) && mouseIsPressed && drawFries === true)
+    {
+        drawFries = false;
+        drawFriesFinal = true;
+    }
+    
+};
